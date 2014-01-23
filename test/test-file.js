@@ -167,5 +167,37 @@ describe('File', function () {
     assert.equal('(min-width:980px)', file.blocks[0].media);
   });
 
+  it('should detect a block that has a script on the start line', function () {
+    var filename = __dirname + '/fixtures/block_with_script_on_start_line.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+
+    var block = file.blocks[0];
+    assert.equal('js', block.type);
+    assert.equal(2, block.raw.length);
+    assert.equal(1, block.src.length);
+  });
+
+  it('should detect a block that has a script on the end line', function () {
+    var filename = __dirname + '/fixtures/block_with_script_on_start_line.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+
+    var block = file.blocks[0];
+    assert.equal('js', block.type);
+    assert.equal(2, block.raw.length);
+    assert.equal(1, block.src.length);
+  });
+
+  it('should detect a block on a single line', function () {
+    var filename = __dirname + '/fixtures/block_on_one_line.html';
+    var file = new File(filename);
+    assert.equal(1, file.blocks.length);
+
+    var block = file.blocks[0];
+    assert.equal('js', block.type);
+    assert.equal(1, block.raw.length);
+    assert.equal(1, block.src.length);
+  });
 
 });

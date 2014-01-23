@@ -45,11 +45,27 @@ describe('FileProcessor', function () {
       var file = {
         content: 'foo\nbar\nbaz\n',
         blocks: [{
-          raw: ['bar', 'baz']
+          raw: ['bar', 'baz'],
+          startIndex: 0
         }]
       };
       var result = fp.replaceBlocks(file);
       assert.equal(result, 'foo\nfoo\n');
+    });
+
+    it('should not remove content before or after the block', function () {
+      var fp = new FileProcessor('html', [], {});
+      fp.replaceWith = function () { return 'foo'; };
+      var file = {
+        content: 'bar\nbefore blockstart\ncontent\nblockend after\nbaz',
+        blocks: [{
+          raw: ['before blockstart', 'content', 'blockend after'],
+          startIndex: 7,
+          endIndex: -6
+        }]
+      };
+      var result = fp.replaceBlocks(file);
+      assert.equal(result, 'bar\nbefore foo after\nbaz');
     });
   });
 
